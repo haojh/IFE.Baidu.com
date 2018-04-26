@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>js任务5</title>
+	<link rel="stylesheet" href="">
+	<style type="text/css" media="screen">
+		#container div{
+			width: 20px;
+			height: 50px;
+			background-color: #AD5168FF;
+			display: inline-block;
+			margin:10px 3px;
+		}
+	</style>
+</head>
+<body>
+	<input type="text" id="con">
+	<button type="" id="l-in">左侧入</button>
+	<button type="" id="r-in">右侧入</button>
+	<button type="" id="l-out">左侧出</button>
+	<button type="" id="r-out">右侧出</button>
+	<button type="" id="sort_out">从大到小排序</button>
+	<div id="container"></div>
+	<script type="text/javascript">	
+		//获取页面中的元素	
+		var con = document.getElementById("con");
+		var btn1 = document.getElementById("l-in");
+		var btn2 = document.getElementById("r-in");
+		var btn3 = document.getElementById("l-out");
+		var btn4 = document.getElementById("r-out");
+		var btn5 = document.getElementById("sort_out");
+		var container = document.getElementById("container");
+		var values = new Array();
+
+		//检测输入的值是不是10-100间的数
+		function checkIn(){
+			var input = con.value;
+			var temp = 0;
+			if(input < 10 || input > 100 || isNaN(input)){
+				alert("请输入10-100之间的数");
+				return 0;
+			}else{
+				temp = input;
+			}
+			return temp;
+		}
+
+		//左侧入
+		function leftIn(){
+			var count = container.childNodes;//父节点包含的div元素个数
+			var convalue = checkIn();//应该在点击按钮时在获取内容，要不然是在页面加载完获取值，此时一直为空
+			values.unshift(convalue);
+			var newdiv = document.createElement("div");
+			if(count.length > 60){
+				alert("对列长队大于60");
+				return 0;
+			}else if(convalue == 0){
+				return 0;
+			}
+			else if(count.length == 0){
+				container.appendChild(newdiv);
+			}
+			else{
+				container.insertBefore(newdiv,container.firstChild);
+			}	
+			newdiv.style.height = convalue + "px";//动态修改div元素的height属性，实现div的高度反应输入数字的大小
+		}
+
+		//右侧入
+		function rightIn(){
+			var count = container.childNodes;
+			var convalue = checkIn();
+			values.push(convalue);
+			if(count.length > 60){
+				alert("对列长队大于60");
+			}else if(convalue == 0){
+				return 0;
+			}
+			else{
+				var newdiv = document.createElement("div");
+				container.appendChild(newdiv);
+			}
+			newdiv.style.height = convalue + "px";
+		}
+
+		//左侧出
+		function leftOut(){
+			if(values.length != 0){
+				var item = values.shift();
+				container.removeChild(container.firstChild);//父元素的第一个子节点
+				alert("高度为"+item+'被移除');
+			}else{
+				alert("对列已为空");
+			}
+		}
+			
+		//右侧出
+		function rightOut(){
+			if(values.length != 0){
+				var item = values.pop();
+				container.removeChild(container.lastChild);
+				alert("高度为"+item+'被移除');
+			}else{
+				alert("对列已为空");
+			}
+		}
+
+		//排序
+		function valueSort(){
+			var arrayDivList = Array.prototype.slice.call(container.childNodes,0);
+			var arrayHeight = new Array();
+			//取得每个div元素的height值，不含单位
+			for(var i=0;i<arrayDivList.length;i++){
+				var height = arrayDivList[i].style.height.split("p")[0];//去的height的值，不包含单位px
+				arrayHeight.push(height);
+			}
+			//插入排序
+			for(var i=0;i<arrayHeight.length;i++){
+				for(var j=i-1;j>=0;j--){
+					if(arrayHeight[j+1] > arrayHeight[j]){
+						var temp = arrayHeight[j+1];
+						arrayHeight[j+1] = arrayHeight[j];
+						arrayHeight[j] = temp;
+					}
+				}
+			}
+			//根据排序结果重新排列div元素
+			for(var i=0;i<arrayHeight.length;i++){
+				arrayDivList[i].style.height = arrayHeight[i]+'px';
+			}
+			//alert(arrayHeight);
+		}
+		btn1.onclick = leftIn;
+		btn2.onclick = rightIn;
+		btn3.onclick = leftOut;
+		btn4.onclick = rightOut
+		btn5.onclick = valueSort;
+	</script>
+</body>
+</html>
