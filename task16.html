@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>js任务4</title>
+	<link rel="stylesheet" href="">
+	<style type="text/css" media="screen">
+		#container div{
+			width: 50px;
+			height: 50px;
+			background-color: #AD5168FF;
+			color: white;
+			display: inline-block;
+			font-size: 30px;
+			text-align: center;
+			line-height: 50px;
+		}
+	</style>
+</head>
+<body>
+	<input type="text" id="con">
+	<button type="" id="l-in">左侧入</button>
+	<button type="" id="r-in">右侧入</button>
+	<button type="" id="l-out">左侧出</button>
+	<button type="" id="r-out">右侧出</button>
+	<div id="container"></div>
+	<script type="text/javascript">	
+		//获取页面中的元素	
+		var con = document.getElementById("con");
+		var btn1 = document.getElementById("l-in");
+		var btn2 = document.getElementById("r-in");
+		var btn3 = document.getElementById("l-out");
+		var btn4 = document.getElementById("r-out");
+		var container = document.getElementById("container");
+		var values = new Array();
+		//检测输入的值是不是数字
+		function checkIn(){
+			var input = con.value;
+			var temp;
+			if(/^[0-9]+$/.test(input)){
+				temp = input;
+			}else if(input == ""){
+				alert("请重新输入一个数,因为此时输入为undefined");
+				// return 0;
+			}
+			else{
+				temp = Number(input);
+			}
+			return temp;
+		}
+		//左侧入
+		function leftIn(){
+			var count = container.childNodes;
+			var convalue = checkIn();//应该在点击按钮时在获取内容，要不然是在页面加载完获取值，此时一直为空
+			values.unshift(convalue);
+			var newdiv = document.createElement("div");
+			newdiv.innerHTML = values[0];
+			if(count.length == 0){
+				container.appendChild(newdiv);
+			}
+			else{
+				container.insertBefore(newdiv,container.firstChild);
+			}	
+		}
+		//右侧入
+		function rightIn(){
+			var convalue = checkIn();
+			values.push(convalue);
+			var newdiv = document.createElement("div");
+			newdiv.innerHTML = convalue;
+			container.appendChild(newdiv);
+		}
+		//左侧出
+		function leftOut(){
+			if(values.length != 0){
+				var item = values.shift();
+				container.removeChild(container.firstChild);//父元素的第一个子节点
+				alert(item+'被移除');
+			}else{
+				alert("对列已为空");
+			}
+		}
+			
+		//右侧出
+		function rightOut(){
+			if(values.length != 0){
+				var item = values.pop();
+				container.removeChild(container.lastChild);
+				alert(item+'被移除');
+			}else{
+				alert("对列已为空");
+			}
+		}
+		btn1.onclick = leftIn;
+		btn2.onclick = rightIn;
+		btn3.onclick = leftOut;
+		btn4.onclick = rightOut
+	</script>
+</body>
+</html>
