@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>IFE JavaScript Task 02</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	<h3>污染城市列表</h3>
+	<ul id="aqi-list">
+	</ul>
+	<script type="text/javascript">
+		var aqiData = [
+            ["北京", 90],
+            ["上海", 50],
+            ["福州", 10],
+            ["广州", 50],
+            ["成都", 90],
+            ["西安", 100]
+	    ];
+	    (function (){
+	    // 	第一遍形式如下：
+	    // 	var showCity = document.getElementById("aqi-list");
+	    // 	var values;
+	    // 	for(i=0;i<aqiData.length;i++){
+	    // 		values = aqiData[i].splice(1,2);
+	    // 		spice()方法是删除数组中的任意项，其中，第一个参数是要从数组那个位置开始删除，第二个参数是要删除几项注意该函数返回值是删除的项，利用该特点获取数组中的特定项
+	    // 		if(values >= 60){
+	    // 			city = aqiData[i].splice(0,1);
+	 			// 	//alert(city);
+					// var newli = document.createElement("li");//创建li元素
+					// newli.innerHTML = "城市:"+ city + "&nbsp;"+"污染值:"+values;
+					// //注意不能使用newli.value属性，实现不了。使用innerHTML属性
+					// showCity.appendChild(newli);//将创建的li元素，添加到文档树中。
+	    // 		}
+	    // 	}
+
+	    	//第二种形式
+	    	// var showCity = document.getElementById("aqi-list");
+	    	// var values = new Array();//定义一个数组
+	    	// var temp;
+	    	// var j=0;
+	    	// for(var i=0;i<aqiData.length;i++){
+	    	// 	temp = aqiData[i][1];//注意aqiData是一个二维数组
+	    	// 	if(temp >= 60){
+	    	// 			values[j] = aqiData[i];
+	    	// 			//此时二维数组values数组保存污染值大于60的城市的信息
+	    	// 			j++;
+	    	// 		}
+	    	// }
+	    	// var n = (values.length-1);//alert(n)--2
+	    	// for(n;n>=0;n--){
+	    	// 	var newli = document.createElement("li");
+	    	// 	newli.innerHTML = "第"+(n+1)+"名："+values[(values.length-1-n)];
+	    	// 	showCity.appendChild(newli);
+	    	// }
+
+	    	//形式3如下：考虑排序
+	    	var showCity = document.getElementById("aqi-list");
+	    	var values = new Array();//定义一个数组
+	    	var temp;
+	    	var j=0;
+	    	for(var i=0;i<aqiData.length;i++){
+	    		temp = aqiData[i][1];//注意aqiData是一个二维数组
+	    		if(temp >= 60){
+	    				values[j] = aqiData[i];
+	    				//此时二维数组values数组保存污染值大于60的城市的信息
+	    				j++;
+	    			}
+	    	}
+	    	function compare(){
+	    		return function(x,y){
+	    			return y[1]-x[1];
+	    		}
+	    	}
+	    	values.sort(compare());
+	    	for(var n=0;n<values.length;n++){
+	    		var newli = document.createElement("li");
+	    		newli.innerHTML = "第"+(n+1)+"名："+values[n];
+	    		showCity.appendChild(newli);
+	    	}
+	     })();
+	</script>
+</body>
+</html>
